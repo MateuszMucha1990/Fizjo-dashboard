@@ -14,8 +14,16 @@ app.set('views' , path.join(__dirname + '/../views'));;
 
 //layouts
 //app.use(expressLayouts);
+app.use(express.urlencoded({extended:true}));
 
+
+//public
 app.use(express.static('public'));
+
+//middleware
+app.use(express.json())
+
+//routes
 app.use(require('./routes/web.js'));
 
 module.exports = app;
