@@ -6,21 +6,23 @@ const authMiddleware = require('../db/middlewares/is-auth')
 
 
 //strona głowna
-router.get('/', PageController.home);
+//router.get('/', PageController.home);
 
+
+//Logowanie
+//router.get('/zaloguj', UserController.showLogin);
+router.get('/zaloguj', PageController.home);
+router.post('/zaloguj', UserController.login);
 
 
 //Rejestracja
 router.get('/zarejestruj', UserController.showRegister);
 router.post('/zarejestruj', UserController.register);
 
-//Logowanie
-router.get('/zaloguj', UserController.showLogin);
-router.post('/zaloguj', UserController.login);
 
 //panel admina
-router.get('/admin',authMiddleware, UserController.dashboard)
-
+router.get('/admin',authMiddleware, UserController.dashboard);
+router.post('/refresh-token', UserController.getRefreshToken)
 
 
 
