@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
-
+const cookieParser = require('cookie-parser')
 
 //database
 require('./db/mongoose')
@@ -14,14 +14,16 @@ app.set('views' , path.join(__dirname + '/../views'));;
 
 //layouts
 //app.use(expressLayouts);
-app.use(express.urlencoded({extended:true}));
 
 
 //public
 app.use(express.static('public'));
 
-//middleware
-app.use(express.json())
+//middleware Parser
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({extended: true}));
+
 
 //routes
 app.use(require('./routes/web.js'));
