@@ -5,6 +5,7 @@ const UserController = require('../controller/user-controller');
 const authMiddleware = require('../db/middlewares/is-auth')
 
 
+
 //strona głowna
 //router.get('/', PageController.home);
 
@@ -12,23 +13,16 @@ const authMiddleware = require('../db/middlewares/is-auth')
 //strona glowna do logowania-ok
 router.get('/zaloguj', PageController.home);//wyswietlenie formularza
 router.post('/zaloguj', UserController.login); //faktyczne logowanie
-
-
-
-//Logowanie do panelu admina
-router.get('/admin',authMiddleware,UserController.showLogin);
-
+router.post('/token',UserController.getRefreshToken);
 
 //Rejestracja
 router.get('/zarejestruj', UserController.showRegister);
 router.post('/zarejestruj', UserController.register);
 
+//Panel admina
+router.get('/admin',authMiddleware, UserController.adminPage);
 
-//panel admina
-//router.get('/admin',authMiddleware, UserController.dashboard);
-router.post('/refresh-token',authMiddleware, UserController.getRefreshToken)
-
-
+router.get('/admin/kalendarz',authMiddleware, UserController.calendar)
 
 
 module.exports = router;

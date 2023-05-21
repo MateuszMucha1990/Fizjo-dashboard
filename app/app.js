@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 //database
 require('./db/mongoose')
