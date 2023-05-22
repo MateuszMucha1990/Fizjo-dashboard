@@ -10,7 +10,7 @@
 
 </head>
 <body>
-
+<form action="" method="POST">
 
     <input type="checkbox" name="" id="menu-toggle">
     <div class="overlay">
@@ -23,10 +23,12 @@
                 <h2><span class="lab la-staylinked"></span></h2></div>
                 <div class="sidebar-avartar">
                     <div>
-                        <img src="/img/logo.jpg" alt="">
+                        <img src="/img/face.jpg" alt="">
                     </div>
                     <div class="avartar-info">
-                        <div class="avartar-text"><h4>Alicja Mucha</h4></div>
+                        <% if (username) {%>
+                        <div class="avartar-text"><h4><%= username %></h4></div>
+                        <%}%>
                         <span class="las la-angle-down"></span>
                     </div>
                 </div>
@@ -41,13 +43,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/admin/pacjenci">
                         <span class="las la-user-injured"></span>
                         <span>Pacjenci</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/admin/kalendarz">
                         <span class="las la-calendar"></span>
                         <span>Kalendarz</span>
                     </a>
@@ -68,7 +70,8 @@
                 <h4>FizjoGen</h4>
             </div>
             <img src="/img/logo.jpg" alt="">
-            <button class="btn btn-main">Edytuj</button>
+            <a href="/wyloguj">Wyloguj</a>
+            <a href="/admin/edytujprofil" >Edytuj</a>
         </div>
    </div>
  </div>
@@ -135,9 +138,11 @@
                     <div class="revenue-card">
                         <h3 class="section-head">Total Revenue</h3>
                        <div class="rev-content">
-                            <img src="/img/logo.jpg"  alt="">
+                            <img src="/img/face.jpg"  alt="">
                             <div class="rev-info">
-                                <h3>Alicaj Mucha</h3>
+                                <% if (username) {%>
+                                <h3><%- username %></h3>
+                                <%}%>
                                 <h1>3m <small>wyświetleń</small></h1>
                             </div>
                             <div class="rev-sum">
@@ -166,7 +171,7 @@
                                 </div>
                             </div>
                             <div class="graph-board">
-                                <canvas id="revenueChart" width="100vw" height="50px"></canvas>
+                                <canvas id="revenueChart" ></canvas>
                             </div>
                         </div>
                     </div>
@@ -176,7 +181,7 @@
 
         </main>
     </div>      
-
+</form>
 
 
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.js"></script>

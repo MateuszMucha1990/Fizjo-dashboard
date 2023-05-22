@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 //database
 require('./db/mongoose')
@@ -11,6 +12,13 @@ require('./db/mongoose')
 app.set('view engine', 'ejs');
 app.set('views' , path.join(__dirname + '/../views'));;
 
+//middleware sesji
+app.use(session({
+    secret: 'sessionKeySecret',   //dodatkowe zabezpieczenie zapisane w konfigu-losowy klucz
+    saveUninitialized: true,  
+    cookie:{maxAge:1000*60*60*24*2}, 
+    resave: false  
+}));
 
 //layouts
 //app.use(expressLayouts);
@@ -23,6 +31,8 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
+
+app.use('/admin', require('./db/middlewares/user-middleware'));
 
 
 //routes

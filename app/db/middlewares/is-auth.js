@@ -19,6 +19,8 @@ const authMiddleware =(req,res, next) =>{
             return res.redirect('/zaloguj');
         }
         req.user = user;
+     
+        //console.log(req.session);
         res.clearCookie("accTkn");
         next();
     })
