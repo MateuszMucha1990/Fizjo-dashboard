@@ -1,5 +1,6 @@
 const User = require('../db/models/Users');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const {accesstoken,refreshtoken} = require('../config');
 const RefreshTokenModel = require('../db/models/Refresh-token');
 
@@ -30,21 +31,28 @@ class UserController {
         res.render('pages/login')
     }
  
-    adminPage(req,res) {
-        var context=req.session.user;
-        res.render('pages/admin-panel/dashboard', context);
+  async  adminPage(req,res) {
+        const find =req.session.user
+        const user = await User.findOne({username:find.username});
+        
+       //foto
+        const image =  req.cookies.filename
+        res.render('pages/admin-panel/dashboard', {
+            form:image,
+            username:user.username
+        });
     }
 
 
     async login(req,res) {
+        try{
         const {username,password} = req.body;
-
+       
         const user = await User.findOne({username:req.body.username});
         const users = await User.findOne({user:req.body.user});
     
         req.session.user = user;
         req.session.users = users;
-        
 
         if (!user) {
            console.log('niedziala');
@@ -75,34 +83,37 @@ class UserController {
           
             res.redirect('/admin')
         };
+    }catch{
+        //
+    }
    }
 
    getRefreshToken(req,res) {
-        if(req.cookies?.jwt) {
-            console.log('odebrano token');
-            const refreshToken = req.cookies.accTkn;
-            jwt.verify(refreshToken, refreshtoken,
-                (err,user) => {
-                    if(err) {
-                        console.log('nieautoryzowany');
-                        return res.status(406).json({ message: 'Unauthorized' });
-                    } else {
-                        const {username,password} = req.body;
-                        const user =  User.findOne({username:req.body.username});
-                        const newAccessToken = jwt.sign({username:user.username},accesstoken,{expiresIn:'5s'});
-                        console.log('przeslano accestoken');
-                        //COOKIE
-                        res.cookie('acccTkn', newAccessToken, { httpOnly: true, 
-                        sameSite: 'None', secure: true, 
-                        maxAge: 24 * 60 * 60 * 1000 });
-                        //res.redirect('/admin')
-                        //return res.json({accessToken})
-                    }
-                });
-            }else{
-                console.log('nieautoryzowany-2');
-                return res.status(406).json({ message: 'Unauthorized' });
-            }
+        // if(req.cookies?.jwt) {
+        //     console.log('odebrano token');
+        //     const refreshToken = req.cookies.accTkn;
+        //     jwt.verify(refreshToken, refreshtoken,
+        //         (err,user) => {
+        //             if(err) {
+        //                 console.log('nieautoryzowany');
+        //                 return res.status(406).json({ message: 'Unauthorized' });
+        //             } else {
+        //                 const {username,password} = req.body;
+        //                 const user =  User.findOne({username:req.body.username});
+        //                 const newAccessToken = jwt.sign({username:user.username},accesstoken,{expiresIn:'5s'});
+        //                 console.log('przeslano accestoken');
+        //                 //COOKIE
+        //                 res.cookie('acccTkn', newAccessToken, { httpOnly: true, 
+        //                 sameSite: 'None', secure: true, 
+        //                 maxAge: 24 * 60 * 60 * 1000 });
+        //                 //res.redirect('/admin')
+        //                 //return res.json({accessToken})
+        //             }
+        //         });
+        //     }else{
+        //         console.log('nieautoryzowany-2');
+        //         return res.status(406).json({ message: 'Unauthorized' });
+        //     }
         }
 //WYLOGOWANIE
         logout(req,res) {
@@ -113,34 +124,46 @@ class UserController {
         }
 
 //EDYCJA
-        showEditUserProfile(req,res){
+      async  showEditUserProfile(req,res){
+            
+            const find =req.session.user
+            const users = await User.findOne({username:find.username});
             res.render('pages/editprofile',{
-                form: req.session.users
+                form: users,
             })
         }   
     
       async  updateProfile (req,res) {
-            const find =req.session.users
-           // console.log(find);
+            const find =req.session.user
             const users = await User.findOne({username:find.username});
-            console.log(users);
-            users.username = req.body.username;
-            users.email = req.body.email;
+                users.username = req.body.username;
+                users.email = req.body.email;
 
             if(req.body.password){
                 users.password = req.body.password
             }
+
+            //FOTO
+            if (req.file.filename && users.image) {
+                fs.unlinkSync('public/uploads/' +  users.image);
+            }
+            if (req.file.filename){
+                users.image = req.file.filename;
+                res.cookie('filename', users.image);
+                } 
+
             try{
                 await users.save();
-                console.log('zapisano');
-                req.session.users
-                res.redirect('/zaloguj')
+                req.session.user
+                res.redirect('/admin')
             } catch(e) {
-                errors: e.errors,
-                console.log('nie zapisano');
+                res.render('pages/editprofile',{
+                errors: e.errors})
             }
 
+
         }
+        
     
     
 

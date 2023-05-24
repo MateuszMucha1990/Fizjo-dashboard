@@ -1,21 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja użytkownika</title>
+</head>
+<body>
+  
+
 <h1>Edycja profilu</h1>
 
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
 
     <div class="mb-3">
         <label for="username" class="form-label">Nazwa użytkownika</label>
-        <input type="text"  name="username" id="username" class="form-control">
+        <input required type="text"  value="<%= form.username%>" name="username" id="username" class="form-control">
     </div>
+    
 
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" id="email" class="form-control">
+        <input required type="email" value="<%= form.email %>" name="email" id="email" class="form-control">
     </div>
-
+    
+    
     <div class="mb-3">
         <label for="password" class="form-label">Hasło</label>
         <input type="password" name="password" id="password" class="form-control">
     </div>
     
+
+<div class="mb-3">
+        <label for="image" class="form-label">Zdjęcie</label>
+        <input type="file" name="image" class="form-control" id="image">
+    </div>
+
     <button class="btn btn-danger">Zapisz zmiany!</button>
 </form>
+
+
+
+<% if (typeof errors !== 'undefined') { %>
+        <div class="alet alert-danger"> cos zdechło</div>
+     <% } %>  
+
+
+
+
+
+
+</body>
+</html>

@@ -10,7 +10,7 @@ require('./db/mongoose')
 
 //view engine
 app.set('view engine', 'ejs');
-app.set('views' , path.join(__dirname + '/../views'));;
+app.set('views' , path.join(__dirname, '/../views', ));;
 
 //middleware sesji
 app.use(session({
@@ -32,7 +32,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/admin', require('./db/middlewares/user-middleware'));
+app.use('/', require('./db/middlewares/user-middleware'));
+app.use('/admin', require('./db/middlewares/is-auth-middleware'));
+app.use('/admin', require('./db/middlewares/is-auth'));
 
 
 //routes

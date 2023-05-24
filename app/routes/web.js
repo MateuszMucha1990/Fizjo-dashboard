@@ -3,7 +3,7 @@ const router = new express.Router();
 const PageController = require('../controller/page-controller');
 const UserController = require('../controller/user-controller');
 const authMiddleware = require('../db/middlewares/is-auth');
-
+const upload =require('../services/uploader')
 
 
 
@@ -21,14 +21,15 @@ router.get('/zarejestruj', UserController.showRegister);
 router.post('/zarejestruj', UserController.register);
 
 //Panel admina
-router.get('/admin',authMiddleware, UserController.adminPage);
+router.get('/admin', upload.single('image'), UserController.adminPage);
 
 //wylogowywanie
 router.get('/wyloguj', UserController.logout)
 
 //edycja profilu
-router.get('/admin/edytujprofil',authMiddleware, UserController.showEditUserProfile);
-router.post('/admin/edytujprofil',authMiddleware, UserController.updateProfile);
+router.get('/admin/edytujprofil', upload.single('image'), UserController.showEditUserProfile);
+router.post('/admin/edytujprofil', upload.single('image'), UserController.updateProfile);
+
 
 
 router.get('/admin/kalendarz',authMiddleware, UserController.calendar)
