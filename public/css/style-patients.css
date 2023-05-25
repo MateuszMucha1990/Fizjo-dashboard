@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --color-main: #396aff;
+    --bg: #abe4d12c;
+    --bg2: #dce5ff;
+    --main-accent: #e9eefd;
+    --main-text: #4b5876;
+    --shadow: rgba(17,17,26,0.1) 2px 2px 16px;
+}
+
+.board-container{
+    margin-right: 30px;
+}
+.board{
+    width: 100%;
+    margin: 30px 0 30px 30px;
+    overflow: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}

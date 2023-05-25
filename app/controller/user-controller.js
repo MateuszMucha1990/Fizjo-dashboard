@@ -79,8 +79,7 @@ class UserController {
         res.cookie('accTkn', accessToken, { httpOnly: true, 
             sameSite: 'None', secure: true, 
             maxAge: 24 * 60 * 60 * 1000 });
-            // res.json({ accessToken: accessToken, refreshToken: refreshToken })          
-          
+            // res.json({ accessToken: accessToken, refreshToken: refreshToken })  
             res.redirect('/admin')
         };
     }catch{
@@ -142,26 +141,34 @@ class UserController {
             if(req.body.password){
                 users.password = req.body.password
             }
-
+            
             //FOTO
-            if (req.file.filename && users.image) {
-                fs.unlinkSync('public/uploads/' +  users.image);
-            }
-            if (req.file.filename){
+            const image =  req.cookies.filename
+            const path = 'public/uploads/' +  image
+
+            if (req.file ){
+                fs.unlink(path, function(err) {
+                    if(err && err.code == 'ENOENT'){
+                        console.log('nienzaleziono zdjecia')
+                    }else{console.log('usunieto');}
+                });} 
+           
+            if(!req.file){
+                 console.log('niedziala');
+            }else{
                 users.image = req.file.filename;
                 res.cookie('filename', users.image);
-                } 
+            }
+             
 
             try{
                 await users.save();
-                req.session.user
+                req.session.user=users
                 res.redirect('/admin')
             } catch(e) {
                 res.render('pages/editprofile',{
                 errors: e.errors})
             }
-
-
         }
         
     
@@ -169,6 +176,7 @@ class UserController {
 
 
 
+        
 
     calendar(req,res) {
         res.render('pages/admin-panel/calendar')

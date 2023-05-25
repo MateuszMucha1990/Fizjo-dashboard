@@ -8,7 +8,7 @@ const upload =require('../services/uploader')
 
 
 //strona głowna
-//router.get('/', PageController.home);
+//router.get('/', PageController.home);   //TODO ------
 
 
 //strona glowna do logowania-ok
@@ -30,9 +30,12 @@ router.get('/wyloguj', UserController.logout)
 router.get('/admin/edytujprofil', upload.single('image'), UserController.showEditUserProfile);
 router.post('/admin/edytujprofil', upload.single('image'), UserController.updateProfile);
 
+//Pacjenci-glowna
+router.get('/admin/pacjenci', PageController.patientList)
 
 
-router.get('/admin/kalendarz',authMiddleware, UserController.calendar)
+//kalendarz
+router.get('/admin/kalendarz',authMiddleware, UserController.calendar)  //TODO-----
 
 
 module.exports = router;

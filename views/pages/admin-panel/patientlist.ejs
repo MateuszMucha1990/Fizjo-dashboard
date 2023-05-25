@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel admina</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="/css/style-dashboard.css">
+    <link rel="stylesheet" href="/css/style-patients.css">
+
+</head>
+
+<body>
+    
+    <%- include('../../partials/sidebar'); -%>
+    <div class="main-content">
+        <header>
+            <div class="header-title-wrapper"> 
+                <label for="menu-toggle">
+                        <span class="las la-bars"></span>
+                </label>
+                <div class="header-title">
+                    <h1>Lista pacjentów</h1>
+                   <span class="las la-user-injured"></span>
+                </div>
+            </div> 
+        </header>
+        <div class="board-container">
+            <dir class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>Imie i Nazwisko</td>
+                            <td>Pesel</td>
+                            <td>Nr tel</td>
+                            <td>Najbliższa wizyta</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h4>Alicja Mucha</h4>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </dir>
+        </div>
+
+
+
+
+
+
+        
+
+
+    </div>
+</body>
