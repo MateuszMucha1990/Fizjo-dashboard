@@ -14,6 +14,7 @@
 <body>
     
     <%- include('../../partials/sidebar'); -%>
+    <form action=""> 
     <div class="main-content">
         <header>
             <div class="header-title-wrapper"> 
@@ -26,22 +27,245 @@
                 </div>
             </div> 
         </header>
-        <div class="board-container">
+
+        
+        <div class="board-container"> 
+            <div class="search_row">
+                <div class="row">
+                    <div class="col">
+                            <label for="sort" class="sort form-label">Sortuj wg</label>
+                        <select name="sort" id="sort" class="form-control">
+                            <option value="">Domyślnie</option>
+                            <option value="name|asc" >A-z</option>
+                            <option value="name|desc">Z-a</option>
+                            
+                            <option value="email">Najbliższa wizyta</option>
+                        </select>
+                        <button class="btn btn-primary mt-3">Szukaj</button>
+                    </div>
+                </div>
+                
+            <form method="GET">
+                <div class="search">
+                    <input type="text" class='form-control'
+                    value="<%- query.q %>"
+                    placeholder="Szukaj..." 
+                    name="q">
+                <button class="btn btn-primary ms-2">Szukaj</button>
+                </div>
+            </form>    
+            </div>
+
             <dir class="board">
                 <table width="100%">
                     <thead>
+                      
+
                         <tr>
                             <td>Imie i Nazwisko</td>
                             <td>Pesel</td>
                             <td>Nr tel</td>
                             <td>Najbliższa wizyta</td>
+                            <td class="add_patient">
+                                <a href="/admin/pacjenci/dodaj" class="new_patient"><p>Dodaj pacjenta</p> </a>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="people">
                                 <div class="people-desc">
-                                    <h4>Alicja Mucha</h4>
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                                <a href="#">Karta Pacjenta</a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>mateusz Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Andrzej Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
+                                    <p class="people_email">alicjamucha@op.pl</p>
+                                </div>
+                            </td>
+
+                            <td class="people_psl">
+                                <h4>90040615454</h4>
+                            </td>
+                            <td class="people_numb">
+                                <h4>730063555</h4>
+                            </td>
+                            <td class="people_visit">
+                                <h4>730063555</h4>
+                            </td>
+
+                            <td class="people_edit">
+                            <button class="btn btn-main">Karta Pacjenta</button>
+                                
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="people">
+                                <div class="people-desc">
+                                    <h3>Alicja Mucha</h3>
                                     <p class="people_email">alicjamucha@op.pl</p>
                                 </div>
                             </td>
@@ -68,13 +292,6 @@
             </dir>
         </div>
 
-
-
-
-
-
-        
-
-
     </div>
+</form>
 </body>

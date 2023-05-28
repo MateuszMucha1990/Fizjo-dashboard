@@ -2,6 +2,8 @@ const express = require('express');
 const router = new express.Router();
 const PageController = require('../controller/page-controller');
 const UserController = require('../controller/user-controller');
+const PatientController = require('../controller/patient-controller');
+
 const authMiddleware = require('../db/middlewares/is-auth');
 const upload =require('../services/uploader')
 
@@ -31,7 +33,13 @@ router.get('/admin/edytujprofil', upload.single('image'), UserController.showEdi
 router.post('/admin/edytujprofil', upload.single('image'), UserController.updateProfile);
 
 //Pacjenci-glowna
-router.get('/admin/pacjenci', PageController.patientList)
+router.get('/admin/pacjenci', PatientController.patientList)
+router.get('/admin/pacjenci/dodaj', PatientController.addPatient);
+//router.post('/zarejestruj', UserController.register)
+
+
+
+
 
 
 //kalendarz
