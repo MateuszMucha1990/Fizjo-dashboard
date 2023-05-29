@@ -1,13 +1,84 @@
-.main-content{
-    background: yellow;
-}
 
 .board-container{
-    width: 100%;
+    margin-right: 30px;
+}
+.board-container{
+    width: auto;
     margin: 30px 0 30px 30px;
     overflow: auto;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: var(--shadow);
+}
+
+
+.button-34 {
+  background: #5E5DF0;
+  border-radius: 999px;
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family:sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+  margin: 10px 10px;
+}
+
+
+.details{
+    margin: 10px  10px ;
+}
+
+.fields{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.input-field{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% / 3 - 20px);
+    margin: 4px 0;
+}
+input, textarea{
+    height: 42px;
+    margin: 8px 0 30px;
+    outline: none;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    border-radius:5px ;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+}
+input:is(:focus, :valid){
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+}
+.text-field{
+    min-height: 100px;
+}
+.fields-2{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-wrap: wrap;
 }
 

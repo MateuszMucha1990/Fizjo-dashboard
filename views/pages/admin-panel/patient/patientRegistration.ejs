@@ -27,24 +27,56 @@
                 </div> 
             </header>
 
+        <form action="" method="post">
 
-<div class="board-container">
-            <form method="POST">
+            <div class="board-container">
                 <div class="form first">
+                    <button class="button-34" role="button">Zapisz pacjenta</button>
                     <div class="details personal">
-                        <span>Personal details</span>
                         
                         <div class="fields">
                             <div class="input-field">
                                 <label for="">Imię i Nazwisko</label>
-                                <input type="text" placeholder="Podaj imię i nazwisko">
+                                <input type="text" name="name" id="name" placeholder="Podaj imię i nazwisko" required>
                             </div>
+                            <div class="input-field">
+                                <label for="">Data urodzenia</label>
+                                <input type="date" name="birth" id="birth" placeholder="Podaj datę urodzenia" >
+                            </div>
+                            <div class="input-field">
+                                <label for="">Email</label>
+                                <input type="email" name="email" id="email" placeholder="Podaj Email" >
+                            </div>
+                            <div class="input-field">
+                                <label for="">PESEL</label>
+                                <input type="number" name="pesel" id="pesel" placeholder="Podaj PESEL" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="">Numer telefonu</label>
+                                <input type="number" name="phone" id="phone" placeholder="Podaj Nr telefonu" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="">Adres zamieszkania</label>
+                                <input type="text" name="address" id="address" placeholder="Podaj Adres" >
+                            </div>
+                        </div>    
+                        <div class="fields-2"> 
+                            
+                            <div class="input-field">
+                                <img src="/img/model.jpg" alt="">
+                            </div>
+
+                            <div class="input-field">
+                                <label for="">Opis dodatkowy</label>
+                               <textarea name="note" id="note" class="text-field" cols="30" rows="10"></textarea>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </form>   
-        </div>    
-        
+            </div>    
+            
+        </form>   
         
       
 

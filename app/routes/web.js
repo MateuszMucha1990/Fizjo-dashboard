@@ -34,8 +34,9 @@ router.post('/admin/edytujprofil', upload.single('image'), UserController.update
 
 //Pacjenci-glowna
 router.get('/admin/pacjenci', PatientController.patientList)
-router.get('/admin/pacjenci/dodaj', PatientController.addPatient);
-//router.post('/zarejestruj', UserController.register)
+
+router.get('/admin/pacjenci/dodaj', PatientController.registerPatient);
+router.post('/admin/pacjenci/dodaj', PatientController.addPatient)
 
 
 
