@@ -12,8 +12,8 @@
 </head>
 
 <body>
-    
     <%- include('../../partials/sidebar'); -%>
+
     <form action=""> 
     <div class="main-content">
         <header>
@@ -27,7 +27,6 @@
                 </div>
             </div> 
         </header>
-
         
         <div class="board-container"> 
             <div class="search_row">
@@ -36,16 +35,15 @@
                             <label for="sort" class="sort form-label">Sortuj wg</label>
                         <select name="sort" id="sort" class="form-control">
                             <option value="">Domyślnie</option>
-                            <option value="name|asc" >A-z</option>
-                            <option value="name|desc">Z-a</option>
+                            <option value="name|asc" <%- query.sort ==='name|asc'? 'selected' : ''%>>A-z</option>
+                            <option value="name|desc"<%- query.sort ==='name|desc'? 'selected' : ''%>>Z-a</option>
                             
-                            <option value="email">Najbliższa wizyta</option>
+                            <option value="visit|asc" <%- query.sort ==='visit|asc'? 'selected' : ''%>>Najbliższa wizyta</option>
                         </select>
                         <button class="btn btn-primary mt-3">Szukaj</button>
                     </div>
                 </div>
                 
-            <form method="GET">
                 <div class="search">
                     <input type="text" class='form-control'
                     value="<%- query.q %>"
@@ -53,7 +51,6 @@
                     name="q">
                 <button class="btn btn-primary ms-2">Szukaj</button>
                 </div>
-            </form>    
             </div>
 
             <dir class="board">
@@ -85,7 +82,7 @@
                                 <h4><%= user.phone %></h4>
                             </td>
                             <td class="people_visit">
-                                <h4>Do ustalenia</h4>
+                                <h4><%= user.visit %></h4>
                             </td>
 
                             <td class="people_edit">

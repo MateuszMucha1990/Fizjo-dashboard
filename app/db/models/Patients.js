@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const patientSchema = new Schema ({
     name:{
@@ -26,7 +27,16 @@ const patientSchema = new Schema ({
     note:{
         type:String,
     },
+    visit:{
+        type:String,
+    }
 });
+
+patientSchema.pre('save',function(next) {
+    this.visit = moment(this.visit).format('DD-MM-YYYY');
+         next()
+});
+
 
 const Patient = mongoose.model('Patient', patientSchema);
 module.exports = Patient;
