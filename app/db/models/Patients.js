@@ -29,7 +29,11 @@ const patientSchema = new Schema ({
     },
     visit:{
         type:String,
-    }
+    },
+    added:{
+        type:Date,
+        default: Date.now()
+    },
 });
 
 patientSchema.pre('save',function(next) {

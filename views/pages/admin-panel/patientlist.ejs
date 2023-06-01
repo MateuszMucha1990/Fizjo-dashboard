@@ -34,13 +34,13 @@
                     <div class="col">
                             <label for="sort" class="sort form-label">Sortuj wg</label>
                         <select name="sort" id="sort" class="form-control">
-                            <option value="">Domyślnie</option>
+                            <option value="added|desc" <%- query.sort ==='added|desc'? 'selected' : ''%>>Ostatnio dodany</option>
                             <option value="name|asc" <%- query.sort ==='name|asc'? 'selected' : ''%>>A-z</option>
                             <option value="name|desc"<%- query.sort ==='name|desc'? 'selected' : ''%>>Z-a</option>
                             
                             <option value="visit|asc" <%- query.sort ==='visit|asc'? 'selected' : ''%>>Najbliższa wizyta</option>
                         </select>
-                        <button class="btn btn-primary mt-3">Szukaj</button>
+                        <button class="btn btn-primary mt-3">Sortuj</button>
                     </div>
                 </div>
                 
@@ -86,14 +86,47 @@
                             </td>
 
                             <td class="people_edit">
-                                <a href="#">Karta Pacjenta</a>
+                                <a href="/admin/pacjenci/<%= user.name %>/karta">Karta Pacjenta</a>
                             </td>
                         </tr>
                         <% }); %>
                     </tbody>
                 </table>
+                <div class="row1">
+                    <div class="col1">
+                        <p>wynikow <%= patients.length %> na <%- resultsCount %> </p>
+                     
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <% for (let i=1; i <= pagesCount ; i++)  { %>
+                                   <li class="page-item ">
+                                    <a href="" class="page-link <%- page == i ? 'active' : ''%> " data-page="<%-i%>" >
+                                          <%-i%>
+                                      </a> 
+                                    </li>
+                                <% } %>  
+                    </div>
+                </div>
             </dir>
         </div>
+        
+        
     </div>
+
 </form>
 </body>
+        
+        <script>
+            const changePage = e=>{
+                e.preventDefault();
+                const search = new URLSearchParams(window.location.search);
+                search.set('page', e.target.dataset.page) //jesli jest podane data-page kolo klasy
+                const url = window.location.origin + window.location.pathname + '?' + search.toString();
+                window.location.href = url; //przekierowanie na nowy url
+            }
+            
+                document.querySelectorAll('.pagination a').forEach
+                  (a => {a.addEventListener('click', changePage)});
+            
+            </script>
+

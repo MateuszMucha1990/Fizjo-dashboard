@@ -12,27 +12,40 @@ class PatientController {
         const image =  req.cookies.filename
         const user = await User.findOne({username:find.username});
         
-        //search,sort
+
         const { q, sort } = req.query 
+        const page = req.query.page || 1;
+        const perPage= 3;
+
         const where ={ };
         where.name={ $regex: q || '', $options: 'i'};
         
+        //search
         let query = Patient.find(where)
+
+        //sort
         if(sort) {
             const s = sort.split('|');
             query = query.sort({ [s[0]]: s[1] })
         }
 
-        
+        //pagination
+        query = query.skip((page-1)*perPage);
+        query = query.limit(perPage)
+
+        //exec
         const patients = await query.exec();
-
-
-
+        const resultsCount = await Patient.find(where).count();
+        const pagesCount = (Math.ceil(resultsCount / perPage))
 
         res.render('pages/admin-panel/patientlist', {
             form:image,
             username:user.username,
-            patients
+            patients,
+            title:patients.name,
+            page,
+            pagesCount,
+            resultsCount
         });
     }
 
@@ -51,6 +64,7 @@ class PatientController {
    async addPatient (req,res) {
         const find =req.session.user
         const user = await User.findOne({username:find.username});
+        
 
         let patient = new Patient ({
             name:req.body.name,
@@ -72,6 +86,16 @@ class PatientController {
                 username:user.username
             })
         }
+    }
+
+   async patientCard(req,res) {
+         const {name} = req.params;
+         const patient = await Patient.findOne({name});
+
+        res.render('pages/admin-panel/patient/patientCard',{
+            name:patient?.name,
+            title:patient?.name
+        })
     }
 
 
