@@ -30,6 +30,10 @@ const patientSchema = new Schema ({
     visit:{
         type:String,
     },
+    visitSubsc:{
+        type:Array,
+        default:[],
+    },
     added:{
         type:Date,
         default: Date.now()

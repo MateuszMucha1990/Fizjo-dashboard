@@ -40,6 +40,9 @@ router.post('/admin/pacjenci/dodaj', PatientController.addPatient)
 
 router.get('/admin/pacjenci/:name/karta', PatientController.patientCard);
 
+router.get('/admin/pacjenci/:name/wizyta', PatientController.patientVisit);
+router.post('/admin/pacjenci/:name/wizyta', PatientController.newVisit);
+
 
 
 

@@ -53,8 +53,8 @@ class PatientController {
    async registerPatient(req,res) {
         const find =req.session.user
         const user = await User.findOne({username:find.username});
+        const image =  req.cookies.filename;
 
-        const image =  req.cookies.filename
         res.render('pages/admin-panel/patient/patientRegistration', {
             form:image,
             username:user.username
@@ -89,14 +89,46 @@ class PatientController {
     }
 
    async patientCard(req,res) {
-         const {name} = req.params;
-         const patient = await Patient.findOne({name});
+       const find =req.session.user
+       const user = await User.findOne({username:find.username});
+       const image =  req.cookies.filename;
+
+       const {name} = req.params;
+       const patient = await Patient.findOne({name});
 
         res.render('pages/admin-panel/patient/patientCard',{
-            name:patient?.name,
-            title:patient?.name
+            title:patient?.name,
+            name,
+            email:patient.email,
+            phone:patient.phone,
+            address:patient.address,
+
+            form:image,
+            username:user.username
         })
     }
+
+
+    async patientVisit(req,res) {
+        const {name} = req.params;
+        const patient = await Patient.findOne({name});
+
+
+        res.render('pages/admin-panel/patient/patientVisit',{
+            name,
+        })
+    }
+
+    async newVisit (req, res) {
+        const {name} = req.params;
+        const patient = await Patient.findOneAndUpdate(
+            {name},
+            {$push:{"visitSubsc":req.body} }
+            );
+
+
+    }
+
 
 
 }
