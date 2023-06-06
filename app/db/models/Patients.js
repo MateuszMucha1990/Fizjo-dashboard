@@ -33,6 +33,9 @@ const patientSchema = new Schema ({
     visitSubsc:{
         type:Array,
         default:[],
+        visitdate:{
+            type:Date
+        }
     },
     added:{
         type:Date,

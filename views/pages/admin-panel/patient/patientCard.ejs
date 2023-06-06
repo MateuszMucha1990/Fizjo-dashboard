@@ -67,18 +67,20 @@
                 <div class="options-part">
                     <div class="history">
                         <a href="/admin/pacjenci/<%= name %>/wizyta">Dodaj nową wizytę</a>
-                        <span class="history-date">01/08/2020</span>
-                        <span class="history-date">01/08/2020</span>
-                        <span class="history-date">01/08/2020</span>
-                        <span class="history-date">01/08/2020</span>
+                        
+                        <% visitSubsc.reverse().forEach (visit => { %>
+                            <a class="history-date" href="/admin/pacjenci/<%= name %>/edytujwizyte"><%= visit.visitdone%></a>
+                        
+                        <% }) %>
                     </div>
                     <div class="history-description">
-                        <h2>Opis wizyty z dnia 01/08/2020</h2>
-                        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quas excepturi nobis quia repudiandae eaque quo ut odio id molestias ipsa, consectetur voluptatem, quam dolore, exercitationem natus ipsam laboriosam eum.<hr></h4>
-                        <h2>Opis wizyty z dnia 01/08/2020</h2>
-                        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quas excepturi nobis quia repudiandae eaque quo ut odio id molestias ipsa, consectetur voluptatem, quam dolore, exercitationem natus ipsam laboriosam eum.<hr></h4>
-                        <h2>Opis wizyty z dnia 01/08/2020</h2>
-                        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quas excepturi nobis quia repudiandae eaque quo ut odio id molestias ipsa, consectetur voluptatem, quam dolore, exercitationem natus ipsam laboriosam eum.<hr></h4>
+                        
+                        
+                        <% visitSubsc.forEach (visit => { %>
+                            
+                            <h2>Opis wizyty z dnia: <%= visit.visitdone%> </h2>
+                        <h4><%= visit.visitSubsc %><hr></h4>
+                        <% }) %>
                     </div>
                     </div>
                    

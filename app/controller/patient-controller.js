@@ -89,23 +89,28 @@ class PatientController {
     }
 
    async patientCard(req,res) {
+        //sidebar-user
        const find =req.session.user
        const user = await User.findOne({username:find.username});
        const image =  req.cookies.filename;
 
+       //patient
        const {name} = req.params;
        const patient = await Patient.findOne({name});
 
         res.render('pages/admin-panel/patient/patientCard',{
+            form:image,
+            username:user.username,
+           
             title:patient?.name,
             name,
             email:patient.email,
             phone:patient.phone,
             address:patient.address,
 
-            form:image,
-            username:user.username
-        })
+            visitSubsc:patient.visitSubsc,
+            visitdone:patient.visitSubsc
+        });
     }
 
 
@@ -116,7 +121,7 @@ class PatientController {
 
         res.render('pages/admin-panel/patient/patientVisit',{
             name,
-        })
+        });
     }
 
     async newVisit (req, res) {
@@ -125,9 +130,27 @@ class PatientController {
             {name},
             {$push:{"visitSubsc":req.body} }
             );
-
-
+            res.redirect('/admin/pacjenci')
     }
+
+   async editVisit(req,res){
+        const {name} = req.params;
+        const patient = await Patient.findOne({name});
+        const szukaj =patient.visitSubsc
+        //console.log('a ' + a); [obj, obj]
+        const finds = await Patient.findOne({'visitSubsc':{$elemMatch:{name:req.params.nam}}})
+        console.log(szukaj.visitdone);
+        console.log('find ' + finds);
+       // console.log('findai ' + finds.visitSubsc.find(x=>x.visitSubsc[1]));
+    
+        res.render('pages/admin-panel/patient/patientVisitEdit',{
+            name,form:finds
+        })
+        
+    }
+
+
+
 
 
 
