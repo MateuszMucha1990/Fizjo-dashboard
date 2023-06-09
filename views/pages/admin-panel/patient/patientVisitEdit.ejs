@@ -1,19 +1,25 @@
 <h1>edytuj wizyte </h1>
 
-<form method="post">
+<form action="" method="post">
 
     <div class="board-container">
         <div class="forms ">
             <button class="button-34" role="button">Edytuj opis wizyty</button>
-                <div class="input-field">
-                    <label for="">Opis wizyty</label>
-
-                    <label for="">Data odbytej wizyty</label>
-                    <input type="date" name="visitdone" id="visitdone" >
-                    <textarea name="visitSubsc" id="visitSubsc" class="text-field" cols="30" rows="10"></textarea>
+            <div class="input-field">
+                <label for="">Opis wizyty</label>
+                
+                <label for="">Data odbytej wizyty</label>
+                    <% patient.visitSubsc.forEach((visitSub) => { %>
+                        <% if ( visitSub.visitdone===visitdone) { %>
+                    <input name="visitSubsc"  type="text" id="visitSubsc" value='<%= visitSub.visitSubsc %>'></input>
+                    <input name="visitSubsca"  type="text" id="visitSubsca" value='<%= visitSub.visitdone %>'></input>
+                   
+                    <%}%> 
+                    <% }); %>  
                 </div>
         </div>
     </div>
         
     
 </form>   
+

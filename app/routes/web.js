@@ -43,7 +43,8 @@ router.get('/admin/pacjenci/:name/karta', PatientController.patientCard);
 router.get('/admin/pacjenci/:name/wizyta', PatientController.patientVisit);
 router.post('/admin/pacjenci/:name/wizyta', PatientController.newVisit);
 
-router.get('/admin/pacjenci/:name/edytujwizyte', PatientController.editVisit);
+router.get('/admin/pacjenci/:name/:visitdone', PatientController.editVisit);
+router.post('/admin/pacjenci/:name/:visitdone', PatientController.updateVisit);
 
 
 

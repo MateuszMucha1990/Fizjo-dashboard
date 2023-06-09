@@ -1,5 +1,6 @@
 const User = require('../db/models/Users');
 const Patient = require('../db/models/Patients');
+const Visit = require('../db/models/Visit');
 const fs = require('fs'); 
 
 
@@ -34,7 +35,9 @@ class PatientController {
         query = query.limit(perPage)
 
         //exec
-        const patients = await query.exec();
+        const patients = await query.populate({path: 'connect', model: "User"}).exec(); //DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        
+    
         const resultsCount = await Patient.find(where).count();
         const pagesCount = (Math.ceil(resultsCount / perPage))
 
@@ -73,13 +76,17 @@ class PatientController {
             phone:req.body.phone,
             address:req.body.address,
             note:req.body.note,
-            visit:req.body.visit
+            visit:req.body.visit,
+            connect:req.session.user._id,
+           
         });
         
         try {
-            await patient.save();
+            await patient.save();                             
+            console.log('zapisano');
             res.redirect('/admin/pacjenci')
         }catch(e){
+            console.log('niezapisano');
             res.render('pages/admin-panel/patient/patientRegistration',{
                 errors:e.errors,
                 form:req.body,
@@ -93,11 +100,15 @@ class PatientController {
        const find =req.session.user
        const user = await User.findOne({username:find.username});
        const image =  req.cookies.filename;
+       
 
        //patient
        const {name} = req.params;
-       const patient = await Patient.findOne({name});
+       const patient =  await Patient.findOne({name})
+       req.session.patient = patient;  
 
+       const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();;
+      
         res.render('pages/admin-panel/patient/patientCard',{
             form:image,
             username:user.username,
@@ -108,8 +119,7 @@ class PatientController {
             phone:patient.phone,
             address:patient.address,
 
-            visitSubsc:patient.visitSubsc,
-            visitdone:patient.visitSubsc
+            allVisit
         });
     }
 
@@ -118,36 +128,74 @@ class PatientController {
         const {name} = req.params;
         const patient = await Patient.findOne({name});
 
-
         res.render('pages/admin-panel/patient/patientVisit',{
             name,
         });
     }
 
     async newVisit (req, res) {
-        const {name} = req.params;
-        const patient = await Patient.findOneAndUpdate(
-            {name},
-            {$push:{"visitSubsc":req.body} }
-            );
+    //     const {name} = req.params;
+    //     const patient = await Patient.findOneAndUpdate(
+    //         {name},
+    //         {$push:{"visitSubsc":req.body} }
+    //         );
+    //         res.redirect('/admin/pacjenci')
+    // }
+        let visit = new Visit({
+            visitSubsc:req.body.visitSubsc,
+            visitTime:req.body.visitdone,
+            visitDate:req.session.patient._id                               //tttttttttttt
+        });
+        try {
+            await visit.save();                                                                         
             res.redirect('/admin/pacjenci')
+        }catch(e){
+            res.render('pages/admin-panel/patient/patientRegistration',{
+                errors:e.errors,
+                form:req.body,
+          
+            })}
     }
+        
 
    async editVisit(req,res){
         const {name} = req.params;
+        const {visitdone} = req.params 
         const patient = await Patient.findOne({name});
-        const szukaj =patient.visitSubsc
-        //console.log('a ' + a); [obj, obj]
-        const finds = await Patient.findOne({'visitSubsc':{$elemMatch:{name:req.params.nam}}})
-        console.log(szukaj.visitdone);
-        console.log('find ' + finds);
-       // console.log('findai ' + finds.visitSubsc.find(x=>x.visitSubsc[1]));
-    
+         
         res.render('pages/admin-panel/patient/patientVisitEdit',{
-            name,form:finds
-        })
-        
+            name, 
+            patient,visitdone,
+        });
     }
+
+      async  updateVisit(req,res){
+            const {name} = req.params;
+            const {visitdone} = req.params 
+            const patient = await Patient.findOne({name});
+            
+            //patient.visitSubsc.visitSubsc=req.body.visitSubsc;
+            //patient.visitSubsc.visitdone=req.body.visitSubsc;
+            
+            patient.visitSubsc.forEach((visitSub,index) => {
+                if (visitSub.visitSubsc ) { 
+                 console.log( visitSub.visitSubsc + index );
+                
+                 visitSub.visitSubsc=req.body.visitSubsc;
+                  }
+                  else{console.log('cos nie tak');}    
+                })
+
+            try{
+                await patient.save();
+                console.log('zapisalo');
+                res.redirect('/admin/pacjenci')
+            } catch(e) {
+                console.log('nie zapisalo');
+                res.render('pages/editprofile',{
+                errors: e.errors})
+            }
+        }
 
 
 
@@ -157,3 +205,48 @@ class PatientController {
 }
 
 module.exports = new PatientController();
+
+//VISITedit chyba
+{/* <form action="" method="post">
+
+<div class="board-container">
+    <div class="forms ">
+        <button class="button-34" role="button">Edytuj opis wizyty</button>
+        <div class="input-field">
+            <label for="">Opis wizyty</label>
+            
+            <label for="">Data odbytej wizyty</label>
+                <% patient.visitSubsc.forEach((visitSub) => { %>
+                    <% if ( visitSub.visitdone===visitdone) { %>
+                <input name="visitSubsc"  type="text" id="visitSubsc" value='<%= visitSub.visitSubsc %>'></input>
+                <input name="visitSubsca"  type="text" id="visitSubsca" value='<%= visitSub.visitdone %>'></input>
+               
+                <%}%> 
+                <% }); %>  
+            </div>
+    </div>
+</div>
+    
+
+</form>    */}
+
+// CARD
+// <div class="options-part">
+//                     <div class="history">
+//                         <a href="/admin/pacjenci/<%= name %>/wizyta">Dodaj nową wizytę</a>
+                        
+//                         <% visitSubsc.reverse().forEach (visit => { %>
+//                             <a class="history-date" href="/admin/pacjenci/<%= name %>/<%= visit.visitdone %>"><%= visit.visitdone%></a>
+                        
+//                         <% }) %>
+//                     </div>
+//                     <div class="history-description">
+                        
+                        
+//                         <% visitSubsc.forEach (visit => { %>
+                            
+//                             <h2>Opis wizyty z dnia: <%= visit.visitdone%> </h2>
+//                         <h4><%= visit.visitSubsc %><hr></h4>
+//                         <% }) %>
+//                     </div>
+//                     </div>
