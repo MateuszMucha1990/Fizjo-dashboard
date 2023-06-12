@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const patientSchema = new Schema ({
     
@@ -40,11 +41,13 @@ const patientSchema = new Schema ({
     //     type: mongoose.Types.ObjectId,
     //     ref: 'Visit'
     // },
-    connect:{
-       type: mongoose.Types.ObjectId,
-        ref: 'User'
-    },
+     connect:{
+        type: mongoose.Types.ObjectId,
+         ref: 'User'
+     },
 });
+
+patientSchema.plugin(mongoosePaginate)
 
 patientSchema.pre('save',function(next) {
     //this.visit = moment(this.visit).format('DD-MM-YYYY');

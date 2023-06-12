@@ -14,7 +14,6 @@ class UserController {
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
-          
         });
         try {
             await user.save();
@@ -34,8 +33,8 @@ class UserController {
  
   async  adminPage(req,res) {
         const find =req.session.user
-        const user = await User.findOne({username:find.username})
-        
+       const user = await User.findOne({username:find.username})
+
        //foto
         const image =  req.cookies.filename
         res.render('pages/admin-panel/dashboard', {

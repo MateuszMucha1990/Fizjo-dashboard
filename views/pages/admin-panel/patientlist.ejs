@@ -52,7 +52,7 @@
                 <button class="btn btn-primary ms-2">Szukaj</button>
                 </div>
             </div>
-
+            
             <dir class="board">
                 <table width="100%">
                     <thead>
@@ -63,51 +63,58 @@
                             <td>Najbliższa wizyta</td>
                             <td class="add_patient">
                                 <a href="/admin/pacjenci/dodaj" class="new_patient"><p>Dodaj pacjenta</p> </a>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% patients.forEach(user => { %>
+                            </tr>
+                        </thead>
+                        
+                        <% const matchingPatients = patients.docs.filter(patient => {return patient.connect.equals(user._id)}) %>
+                        <% matchingPatients.forEach(patient =>{ %>
+                    <tbody id="aaid">
                         <tr>
                             <td class="people">
-                                <div class="people-desc">
-                                    <h3><%= user.name %></h3>
-                                    <p class="people_email"><%= user.email %></p>
-                                </div>
-                            </td>
-
-                            <td class="people_psl">
-                                <h4><%= user.pesel %></h4>
-                            </td>
-                            <td class="people_numb">
-                                <h4><%= user.phone %></h4>
-                            </td>
-                            <td class="people_visit">
-                                <h4><%= user.visit %></h4>
-                            </td>
-
-                            <td class="people_edit">
-                                <a href="/admin/pacjenci/<%= user.name %>/karta">Karta Pacjenta</a>
-                            </td>
-                        </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-                <div class="row1">
-                    <div class="col1">
-                        <p>wynikow <%= patients.length %> na <%- resultsCount %> </p>
-                     
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <% for (let i=1; i <= pagesCount ; i++)  { %>
-                                   <li class="page-item ">
-                                    <a href="" class="page-link <%- page == i ? 'active' : ''%> " data-page="<%-i%>" >
-                                          <%-i%>
-                                      </a> 
-                                    </li>
-                                <% } %>  
-                    </div>
-                </div>
-            </dir>
+                                            <div class="people-desc">
+                                                <h3><%= patient.name %></h3>
+                                                <p class="people_email"><%= patient.email %></p>
+                                            </div>
+                                        </td>
+                                        <td class="people_psl">
+                                            <h4><%= patient.pesel %></h4>
+                                        </td>
+                                        <td class="people_numb">
+                                            <h4><%= patient.phone %></h4>
+                                        </td>
+                                        <td class="people_visit">
+                                            <h4><%= patient.visit %></h4>
+                                        </td>
+                                        <td class="people_edit">
+                                            <a href="/admin/pacjenci/<%= patient.name %>/karta">Karta Pacjenta</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <% })%>
+                                
+                                
+                            </table>
+                                <div class="row1">
+                                    <div class="col1">
+                                        <p>wynikow <%= patients.length %> na <%- resultsCount %> </p>
+                                        
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                
+                                                <% for (let i=1; i <= pagesCount ; i++)  { %>
+                                            
+                                                <li class="page-item ">
+                                                    <a href="" class="page-link <%- page == i ? 'active' : '' %> " data-page="<%-i%>" >
+                                                        <%-i %>
+                                                    </a> 
+                                                </li>
+                                                <% } %>
+                                                
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </dir>
         </div>
         
         
@@ -129,4 +136,6 @@
                   (a => {a.addEventListener('click', changePage)});
             
             </script>
+
+
 

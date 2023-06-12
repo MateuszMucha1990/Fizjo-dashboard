@@ -20,10 +20,7 @@ const userSchema = new Schema ({
         type:String,
         require:[true, 'Hasło jest wymagane'],
     },
-    // connect:[{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Patient'
-    // }],
+   
 
 });
 

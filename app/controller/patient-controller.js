@@ -12,10 +12,10 @@ class PatientController {
         const find =req.session.user
         const image =  req.cookies.filename
         const user = await User.findOne({username:find.username});
-        
+        console.log(user._id);
 
         const { q, sort } = req.query 
-        const page = req.query.page || 1;
+        let page =req.query.page || 1;
         const perPage= 3;
 
         const where ={ };
@@ -23,7 +23,7 @@ class PatientController {
         
         //search
         let query = Patient.find(where)
-
+      
         //sort
         if(sort) {
             const s = sort.split('|');
@@ -31,24 +31,57 @@ class PatientController {
         }
 
         //pagination
-        query = query.skip((page-1)*perPage);
-        query = query.limit(perPage)
+        let start = (page-1)*perPage;
+        let end = page * perPage
 
-        //exec
-        const patients = await query.populate({path: 'connect', model: "User"}).exec(); //DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        // const patients = await query
+        //   .skip(start)
+        //   .limit(perPage)
+        //   .populate({path: 'connect', model: "User"}) 
+        //   .exec(); //DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+//  .skip(start)
+//           .limit(perPage)
+
+
+        let options ={
+            pagingOptions:{
+            populate:{path:'connect'},
+                },
+                page:page,
+                limit:perPage,
+            };
+            
+        const patients = await Patient.paginate(where,options)
+       
         
-    
-        const resultsCount = await Patient.find(where).count();
-        const pagesCount = (Math.ceil(resultsCount / perPage))
+         patients.totalDocs
+         const resultsCount = patients.totalDocs
+         const pagesCount = (Math.ceil(resultsCount / perPage))
+         
+         
+         
+         
+         //----------------------------------------------
+     
+        const patients2 = await Patient.find()
+        let matchingPatients = patients2.filter(patient => {return patient.connect.equals(user._id)}); 
+        let count = matchingPatients.length;
+console.log(count);
+     
+
+
+
+        //----------------------------------------------
 
         res.render('pages/admin-panel/patientlist', {
             form:image,
             username:user.username,
-            patients,
+            patients,user,
             title:patients.name,
             page,
             pagesCount,
-            resultsCount
+            resultsCount,patients2
         });
     }
 
@@ -77,12 +110,13 @@ class PatientController {
             address:req.body.address,
             note:req.body.note,
             visit:req.body.visit,
-            connect:req.session.user._id,
+            connect:req.session.user._id,        
            
         });
         
         try {
-            await patient.save();                             
+            await patient.save();    
+            req.session.patient=patient                         
             console.log('zapisano');
             res.redirect('/admin/pacjenci')
         }catch(e){
@@ -108,7 +142,7 @@ class PatientController {
        req.session.patient = patient;  
 
        const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();;
-      
+    //    console.log(allVisit);
         res.render('pages/admin-panel/patient/patientCard',{
             form:image,
             username:user.username,
@@ -206,47 +240,70 @@ class PatientController {
 
 module.exports = new PatientController();
 
-//VISITedit chyba
-{/* <form action="" method="post">
+// <% userArray.forEach(users => { %>
+//     <% if (users.connect.username == user.username) {%>
+//         <tbody>
+//     <tr>
+//         <td class="people">
+//             <div class="people-desc">
+//                 <h3><%= users.name %></h3>
+//                 <p class="people_email"><%= users.email %></p>
+//             </div>
+//         </td>
 
-<div class="board-container">
-    <div class="forms ">
-        <button class="button-34" role="button">Edytuj opis wizyty</button>
-        <div class="input-field">
-            <label for="">Opis wizyty</label>
-            
-            <label for="">Data odbytej wizyty</label>
-                <% patient.visitSubsc.forEach((visitSub) => { %>
-                    <% if ( visitSub.visitdone===visitdone) { %>
-                <input name="visitSubsc"  type="text" id="visitSubsc" value='<%= visitSub.visitSubsc %>'></input>
-                <input name="visitSubsca"  type="text" id="visitSubsca" value='<%= visitSub.visitdone %>'></input>
-               
-                <%}%> 
-                <% }); %>  
-            </div>
-    </div>
-</div>
-    
+//         <td class="people_psl">
+//             <h4><%= users.pesel %></h4>
+//         </td>
+//         <td class="people_numb">
+//             <h4><%= users.phone %></h4>
+//         </td>
+//         <td class="people_visit">
+//             <h4><%= users.visit %></h4>
+//         </td>
 
-</form>    */}
+//         <td class="people_edit">
+//             <a href="/admin/pacjenci/<%= users.name %>/karta">Karta Pacjenta</a>
+//         </td>
+//     </tr>
+// </tbody>
+//     <% } %>
+//     <% }); %>
 
-// CARD
-// <div class="options-part">
-//                     <div class="history">
-//                         <a href="/admin/pacjenci/<%= name %>/wizyta">Dodaj nową wizytę</a>
-                        
-//                         <% visitSubsc.reverse().forEach (visit => { %>
-//                             <a class="history-date" href="/admin/pacjenci/<%= name %>/<%= visit.visitdone %>"><%= visit.visitdone%></a>
-                        
-//                         <% }) %>
-//                     </div>
-//                     <div class="history-description">
-                        
-                        
-//                         <% visitSubsc.forEach (visit => { %>
-                            
-//                             <h2>Opis wizyty z dnia: <%= visit.visitdone%> </h2>
-//                         <h4><%= visit.visitSubsc %><hr></h4>
-//                         <% }) %>
-//                     </div>
-//                     </div>
+
+
+// <% if (patients.length === 0) { %>
+//     <p>No patients found.</p>
+// <% } else { %>
+//     <% let matchingPatients = patients.filter(patient => patient.connect.username === user.username); %>
+//     <!-- filter patients array to get only the matching patients --> 
+//     <% if (matchingPatients.length > 0) { %> <!-- check if there are any matching patients -->
+      
+//         <% matchingPatients.forEach(patient => { %> <!-- loop over matching patients array -->
+//             <tbody>
+//                 <tr>
+//                     <td class="people">
+//                         <div class="people-desc">
+//                             <h3><%= patient.name %></h3>
+//                             <p class="people_email"><%= patient.email %></p>
+//                         </div>
+//                     </td>
+//                     <td class="people_psl">
+//                         <h4><%= patient.pesel %></h4>
+//                     </td>
+//                     <td class="people_numb">
+//                         <h4><%= patient.phone %></h4>
+//                     </td>
+//                     <td class="people_visit">
+//                         <h4><%= patient.visit %></h4>
+//                     </td>
+//                     <td class="people_edit">
+//                         <a href="/admin/pacjenci/<%= patient.name %>/karta">Karta Pacjenta</a>
+//                     </td>
+//                 </tr>
+//             </tbody>
+//         <% }); %>
+
+//         <% } else { %>
+//             <p>No matching patients found.</p>
+//             <% } %>
+//             <% } %>
