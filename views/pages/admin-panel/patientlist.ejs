@@ -46,7 +46,7 @@
                 
                 <div class="search">
                     <input type="text" class='form-control'
-                    value="<%- query.q %>"
+                    value="<%= q || '' %>"
                     placeholder="Szukaj..." 
                     name="q">
                 <button class="btn btn-primary ms-2">Szukaj</button>
@@ -66,15 +66,15 @@
                             </tr>
                         </thead>
                         
-                        <% const matchingPatients = patients.docs.filter(patient => {return patient.connect.equals(user._id)}) %>
-                        <% matchingPatients.forEach(patient =>{ %>
-                    <tbody id="aaid">
-                        <tr>
-                            <td class="people">
+                       
+                        <% patients.docs.forEach(patient =>{ %>
+                            <tbody id="aaid ">
+                                <tr>
+                                        <td class="people">
                                             <div class="people-desc">
                                                 <h3><%= patient.name %></h3>
                                                 <p class="people_email"><%= patient.email %></p>
-                                            </div>
+                                             </div>
                                         </td>
                                         <td class="people_psl">
                                             <h4><%= patient.pesel %></h4>
@@ -91,26 +91,25 @@
                                     </tr>
                                 </tbody>
                                 <% })%>
+                               
                                 
                                 
                             </table>
                                 <div class="row1">
                                     <div class="col1">
-                                        <p>wynikow <%= patients.length %> na <%- resultsCount %> </p>
+                                        <p>wynikow <%= patients.length %> na <%- totalDocs %> </p>
                                         
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                
-                                                <% for (let i=1; i <= pagesCount ; i++)  { %>
-                                            
-                                                <li class="page-item ">
-                                                    <a href="" class="page-link <%- page == i ? 'active' : '' %> " data-page="<%-i%>" >
-                                                        <%-i %>
-                                                    </a> 
-                                                </li>
-                                                <% } %>
-                                                
-                                                
+                                                <% for (let i=1; i <= patients.totalPages ; i++)  { %>
+                                                   <li class="page-item <%- page == i ? 'active' : ''%>">
+                                                    <a href="" class="page-link" data-page="<%-i%>" >
+                                                          <%-i%>
+                                                      </a> 
+                                                    </li>
+                                                <% } %>    
+                                            </ul>
+                                            </nav>  
                                                 
                                             </div>
                                         </div>

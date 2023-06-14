@@ -4,7 +4,7 @@ const Visit = require('../db/models/Visit');
 const fs = require('fs'); 
 
 
-
+//teraz
 
 class PatientController {
     async patientList(req,res) {
@@ -12,78 +12,50 @@ class PatientController {
         const find =req.session.user
         const image =  req.cookies.filename
         const user = await User.findOne({username:find.username});
-        console.log(user._id);
+        const userId=user._id
 
         const { q, sort } = req.query 
-        let page =req.query.page || 1;
+        const page =req.query.page || 1;
         const perPage= 3;
 
-        const where ={ };
-        where.name={ $regex: q || '', $options: 'i'};
-        
         //search
-        let query = Patient.find(where)
-      
+        let query = Patient.find({'connect': userId});
+        if(q) { query = query.where('name', new RegExp(q, 'i'))};
+
         //sort
         if(sort) {
-            const s = sort.split('|');
-            query = query.sort({ [s[0]]: s[1] })
+            const [sortField, sortOrder] = sort.split('|');
+            query = query.sort({ [sortField]: sortOrder});
         }
-
-        //pagination
-        let start = (page-1)*perPage;
-        let end = page * perPage
-
-        // const patients = await query
-        //   .skip(start)
-        //   .limit(perPage)
-        //   .populate({path: 'connect', model: "User"}) 
-        //   .exec(); //DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
-//  .skip(start)
-//           .limit(perPage)
-
-
-        let options ={
-            pagingOptions:{
-            populate:{path:'connect'},
-                },
-                page:page,
-                limit:perPage,
-            };
-            
-        const patients = await Patient.paginate(where,options)
-       
         
-         patients.totalDocs
-         const resultsCount = patients.totalDocs
-         const pagesCount = (Math.ceil(resultsCount / perPage))
-         
-         
-         
-         
-         //----------------------------------------------
-     
-        const patients2 = await Patient.find()
-        let matchingPatients = patients2.filter(patient => {return patient.connect.equals(user._id)}); 
-        let count = matchingPatients.length;
-console.log(count);
-     
+        //pagination
+        const paginatePatients = async (page, limit,userId) => {
+            const options = {
+              page: page,
+              limit: perPage,
+              populate:'connect',
+              lean:true
+            };
 
+            try{
+                const result = await Patient.paginate(query, options,query);
+                return result;
+            } catch(error){
+                console.log('niedziala paginacja'); } };
 
-
-        //----------------------------------------------
-
-        res.render('pages/admin-panel/patientlist', {
-            form:image,
-            username:user.username,
-            patients,user,
-            title:patients.name,
-            page,
-            pagesCount,
-            resultsCount,patients2
-        });
-    }
+        try {
+            const patients = await paginatePatients(page, perPage,userId); 
+            res.render('pages/admin-panel/patientlist', {
+                    form:image,
+                    username:user.username,
+                    patients,
+                    title:patients.name,
+                    page,q,
+                    totalDocs:patients.totalDocs });
+        } catch (error) {
+            console.error(error);}
+};
+         
 
 
    async registerPatient(req,res) {
@@ -138,24 +110,21 @@ console.log(count);
 
        //patient
        const {name} = req.params;
-       const patient =  await Patient.findOne({name})
-       req.session.patient = patient;  
-
-       const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();;
-    //    console.log(allVisit);
+       const patient =  await Patient.findOne({name});
+       
+       const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();
+      
         res.render('pages/admin-panel/patient/patientCard',{
             form:image,
             username:user.username,
-           
             title:patient?.name,
             name,
             email:patient.email,
             phone:patient.phone,
             address:patient.address,
-
             allVisit
         });
-    }
+    };
 
 
     async patientVisit(req,res) {
@@ -165,20 +134,17 @@ console.log(count);
         res.render('pages/admin-panel/patient/patientVisit',{
             name,
         });
-    }
+    };
 
     async newVisit (req, res) {
-    //     const {name} = req.params;
-    //     const patient = await Patient.findOneAndUpdate(
-    //         {name},
-    //         {$push:{"visitSubsc":req.body} }
-    //         );
-    //         res.redirect('/admin/pacjenci')
-    // }
+        const {name} = req.params;
+        const patient = await Patient.findOne({name});
+        req.session.patient=patient 
+    
         let visit = new Visit({
             visitSubsc:req.body.visitSubsc,
             visitTime:req.body.visitdone,
-            visitDate:req.session.patient._id                               //tttttttttttt
+            visitDate:req.session.patient._id                               
         });
         try {
             await visit.save();                                                                         
@@ -189,7 +155,7 @@ console.log(count);
                 form:req.body,
           
             })}
-    }
+    };
         
 
    async editVisit(req,res){

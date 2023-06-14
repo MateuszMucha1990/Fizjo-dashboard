@@ -37,10 +37,6 @@ const patientSchema = new Schema ({
         type:Date,
         default: Date.now()
     },
-    // visitDate:{
-    //     type: mongoose.Types.ObjectId,
-    //     ref: 'Visit'
-    // },
      connect:{
         type: mongoose.Types.ObjectId,
          ref: 'User'
