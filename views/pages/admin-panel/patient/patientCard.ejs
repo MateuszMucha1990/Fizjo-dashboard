@@ -67,24 +67,21 @@
                 <div class="options-part">
                     <div class="history">
                         <a href="/admin/pacjenci/<%= name %>/wizyta">Dodaj nową wizytę</a>
-                        
-
-                        <% allVisit.forEach(visit => {%>
+                        <% allVisit.reverse().forEach(visit => {%>
                             <% if(visit.visitDate.name == name) {%>
-                            <a class="history-date" href="/admin/pacjenci/<%= name %>/"> <%- visit.visitTime %></a>
-                       
+                            <a class="history-date" href="/admin/pacjenci/<%= name %>/<%=visit.id%>"> <%- visit.visitTime %></a>
                             <% }%>
                             <% })%>
 
                     </div>
-                    <div class="history-description">
-                        
-                        
-                      
+                    <div class="history-description"> 
+                        <% allVisit.forEach(visit => {%>
+                            <% if(visit.visitDate.name == name) {%>
                             
-                            <h2>Opis wizyty z dnia: </h2>
-                        <h4><hr></h4>
-                       
+                            <h2>Opis wizyty z dnia: <%- visit.visitTime %> </h2>
+                        <h4> <%- visit.visitSubsc %> <hr></h4>
+                        <% }%>
+                        <% })%>
                     </div>
                     </div>
                    

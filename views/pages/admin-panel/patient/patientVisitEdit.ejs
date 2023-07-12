@@ -5,17 +5,15 @@
     <div class="board-container">
         <div class="forms ">
             <button class="button-34" role="button">Edytuj opis wizyty</button>
+            <button class="button-34" role="button">Usuń wizytę</button>
             <div class="input-field">
                 <label for="">Opis wizyty</label>
                 
                 <label for="">Data odbytej wizyty</label>
-                    <% patient.visitSubsc.forEach((visitSub) => { %>
-                        <% if ( visitSub.visitdone===visitdone) { %>
-                    <input name="visitSubsc"  type="text" id="visitSubsc" value='<%= visitSub.visitSubsc %>'></input>
-                    <input name="visitSubsca"  type="text" id="visitSubsca" value='<%= visitSub.visitdone %>'></input>
+                 
+                    <input name="visitDesc"  type="text" id="visitDesc" value='<%= form.visitSubsc %>'></input>
+                    <input name="visitdone"  type="date" id="visitdone" value='<%= form.visiTime %>'></input>
                    
-                    <%}%> 
-                    <% }); %>  
                 </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ const Visit = require('../db/models/Visit');
 const fs = require('fs'); 
 
 
-//teraz
+
 
 class PatientController {
     async patientList(req,res) {
@@ -111,9 +111,8 @@ class PatientController {
        //patient
        const {name} = req.params;
        const patient =  await Patient.findOne({name});
-       
        const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();
-      
+      console.log('allvisit '+ allVisit);
         res.render('pages/admin-panel/patient/patientCard',{
             form:image,
             username:user.username,
@@ -153,47 +152,33 @@ class PatientController {
             res.render('pages/admin-panel/patient/patientRegistration',{
                 errors:e.errors,
                 form:req.body,
-          
             })}
     };
         
 
    async editVisit(req,res){
-        const {name} = req.params;
-        const {visitdone} = req.params 
-        const patient = await Patient.findOne({name});
-         
+        const patient = await Patient.findOne({name:req.params.name});
+        const visit = await Visit.findOne({_id:req.params._id});
+        console.log('visit- '+visit);
+      
         res.render('pages/admin-panel/patient/patientVisitEdit',{
-            name, 
-            patient,visitdone,
+            
+            form:visit
         });
     }
 
-      async  updateVisit(req,res){
-            const {name} = req.params;
-            const {visitdone} = req.params 
-            const patient = await Patient.findOne({name});
-            
-            //patient.visitSubsc.visitSubsc=req.body.visitSubsc;
-            //patient.visitSubsc.visitdone=req.body.visitSubsc;
-            
-            patient.visitSubsc.forEach((visitSub,index) => {
-                if (visitSub.visitSubsc ) { 
-                 console.log( visitSub.visitSubsc + index );
-                
-                 visitSub.visitSubsc=req.body.visitSubsc;
-                  }
-                  else{console.log('cos nie tak');}    
-                })
+    async  updateVisit(req,res){
+        const patient = await Patient.findOne({name:req.params.name});
+        const visit = await Visit.findOne({_id:req.params._id});
 
-            try{
-                await patient.save();
-                console.log('zapisalo');
-                res.redirect('/admin/pacjenci')
-            } catch(e) {
-                console.log('nie zapisalo');
-                res.render('pages/editprofile',{
-                errors: e.errors})
+            visit.visitSubsc=req.body.visitDesc;
+            visit.visitTime=req.body.visitdone;
+        try{
+            await visit.save();
+            res.redirect('/admin/pacjenci');
+        } catch(e) {
+            res.render('pages/editprofile',{
+            errors: e.errors});
             }
         }
 
