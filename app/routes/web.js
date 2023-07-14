@@ -46,6 +46,8 @@ router.post('/admin/pacjenci/:name/wizyta', PatientController.newVisit);
 router.get('/admin/pacjenci/:name/:_id', PatientController.editVisit);
 router.post('/admin/pacjenci/:name/:_id', PatientController.updateVisit);
 
+router.post('/admin/pacjenci/:name/:_id/usun', PatientController.deleteVisit);
+
 
 
 

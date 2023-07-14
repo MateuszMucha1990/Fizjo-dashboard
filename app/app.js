@@ -31,6 +31,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 
 app.use('/', require('./db/middlewares/user-middleware'));
 app.use('/admin', require('./db/middlewares/is-auth-middleware'));

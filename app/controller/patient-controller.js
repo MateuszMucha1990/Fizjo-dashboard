@@ -112,7 +112,7 @@ class PatientController {
        const {name} = req.params;
        const patient =  await Patient.findOne({name});
        const allVisit =  await Visit.find().populate({path: 'visitDate', model: "Patient"}).exec();
-      console.log('allvisit '+ allVisit);
+   
         res.render('pages/admin-panel/patient/patientCard',{
             form:image,
             username:user.username,
@@ -157,13 +157,12 @@ class PatientController {
         
 
    async editVisit(req,res){
+    const {name} = req.params;
         const patient = await Patient.findOne({name:req.params.name});
         const visit = await Visit.findOne({_id:req.params._id});
-        console.log('visit- '+visit);
-      
         res.render('pages/admin-panel/patient/patientVisitEdit',{
-            
-            form:visit
+            form:visit,
+            name,visit
         });
     }
 
@@ -173,18 +172,27 @@ class PatientController {
 
             visit.visitSubsc=req.body.visitDesc;
             visit.visitTime=req.body.visitdone;
+         
         try{
             await visit.save();
             res.redirect('/admin/pacjenci');
+            console.log('zapisano');
         } catch(e) {
             res.render('pages/editprofile',{
             errors: e.errors});
             }
         }
 
-
-
-
+      async deleteVisit(req,res) {
+          try {
+                await Visit.deleteOne({_id:req.params._id});
+                res.redirect('/admin/pacjenci');
+                console.log('udalo sie');
+            } catch (e) {
+                errors: e.errors
+                console.log('nieusunelo');
+            }
+        }
 
 
 }

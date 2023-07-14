@@ -1,23 +1,93 @@
-<h1>edytuj wizyte </h1>
-
-<form action="" method="post">
-
-    <div class="board-container">
-        <div class="forms ">
-            <button class="button-34" role="button">Edytuj opis wizyty</button>
-            <button class="button-34" role="button">Usuń wizytę</button>
-            <div class="input-field">
-                <label for="">Opis wizyty</label>
-                
-                <label for="">Data odbytej wizyty</label>
-                 
-                    <input name="visitDesc"  type="text" id="visitDesc" value='<%= form.visitSubsc %>'></input>
-                    <input name="visitdone"  type="date" id="visitdone" value='<%= form.visiTime %>'></input>
-                   
-                </div>
-        </div>
-    </div>
-        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>edytuj wizyte </h1>
     
-</form>   
+    <form action="" method="POST">
+        
+        <div class="board-container">
+            <div class="forms ">
+                <div id="error-message" style="color:red;"></div>
+                <button class="button-34" id="btn-edit">Edytuj opis wizyty</button>
+                <button class="button-34" id="btn-delete">Usuń wizytę</button>
+                
+                <div class="input-field">
+                    <label for="">Opis wizyty</label>
+                    <label for="">Data odbytej wizyty</label>
+                    
+                    <input name="visitDesc"  required type="text" id="visitDesc" value='<%= form.visitSubsc %>'></input>
+                    <input name="visitdone"  required type="date" id="visitdone" value='<%= form.visiTime %>'></input>
+                    
+                </div>
+            </div>
+        </div>
+    </form>   
+    
+</body>
+
+<script>
+    const button_edit = document.getElementById('btn-edit');
+    const errorMessage = document.getElementById('error-message')
+
+    button_edit.addEventListener('click', function(e) {
+     e.preventDefault();
+
+     const visitDesc = document.getElementById('visitDesc').value;
+     const visitdone = document.getElementById('visitdone').value;
+      
+     if (!visitDesc || !visitdone){
+        errorMessage.textContent = 'Proszę wypełnić obydwa pola.'
+        return 
+    }
+
+      fetch("/admin/pacjenci/<%= name %>/<%=visit.id%>", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visitDesc, visitdone })
+      })
+      .then(function(response) {
+        if (response.ok) {
+          console.log('Click was recorded');
+          window.location.href = '/admin/pacjenci';
+          return;
+        }
+        throw new Error('Request failed.');
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    });
+    
+    const button_delete = document.getElementById('btn-delete');
+    button_delete.addEventListener('click', function(e) {
+        e.preventDefault();
+
+     fetch("/admin/pacjenci/<%= name %>/<%=visit.id%>/usun", {
+        method: 'POST',
+        //headers: {
+        //   'Content-Type': 'application/json'
+        // },
+      })
+      .then(function(response) {
+        if (response.ok) {
+          console.log('Click was recorded');
+          window.location.href = '/admin/pacjenci';
+          return;
+        }
+        throw new Error('Request failed.');
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    });
+   
+
+
+  </script>
+</html>
 
