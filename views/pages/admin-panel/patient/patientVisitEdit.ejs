@@ -68,14 +68,9 @@
         e.preventDefault();
 
      fetch("/admin/pacjenci/<%= name %>/<%=visit.id%>/usun", {
-        method: 'POST',
-        //headers: {
-        //   'Content-Type': 'application/json'
-        // },
-      })
-      .then(function(response) {
+        method: 'POST' })
+        .then(function(response) {
         if (response.ok) {
-          console.log('Click was recorded');
           window.location.href = '/admin/pacjenci';
           return;
         }
@@ -86,8 +81,6 @@
       });
     });
    
-
-
   </script>
 </html>
 

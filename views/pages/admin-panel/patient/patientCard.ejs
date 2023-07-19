@@ -58,34 +58,37 @@
 
             <section class="detailProfile card">
                 <div class="options">
-                    <a href="#" class="active">Wizyty</a>
-                    <a href="#" >Historia medyczna</a>
-                    <a href="#">Dane pacjenta</a>
-                    
-                </div>
-                
-                <div class="options-part">
-                    <div class="history">
-                        <a href="/admin/pacjenci/<%= name %>/wizyta">Dodaj nową wizytę</a>
-                        <% allVisit.reverse().forEach(visit => {%>
+                    <div class="tabs_sidebar">
+                        <button class="tabs_button tabs_button--active" data-for-tab="1">Wizyty</button>
+                        <button class="tabs_button" data-for-tab="2">Historia medyczna</button>
+                        <button class="tabs_button" data-for-tab="3">Dane pacjenta</button>
+                    </div>
+
+                    <div class="tabs_content tabs_content--active" data-tab="1">
+                        <div class="history">
+                            <a class="add_new_history" href="/admin/pacjenci/<%= name %>/wizyta">Nowa wizyta</a>
+                           
+                            <% allVisit.reverse().forEach(visit => {%>
                             <% if(visit.visitDate.name == name) {%>
                             <a class="history-date" href="/admin/pacjenci/<%= name %>/<%=visit.id%>"> <%- visit.visitTime %></a>
-                            <% }%>
+                                <% }%>
                             <% })%>
+                        </div>
+                            <div class="history-description"> 
+                            <% allVisit.forEach(visit => {%>
+                                <% if(visit.visitDate.name == name) {%>
+                                <h2>Opis wizyty z dnia: <%- visit.visitTime %> </h2>
+                                <h4> <%- visit.visitSubsc %> <hr></h4>
+                                <% }%>
+                                <% })%>
+                            </div>  
+                    </div>
 
+                    <div class="tabs_content" data-tab="2">
+                        <h2>Tab 2</h2>
+                        <p>coss</p>
                     </div>
-                    <div class="history-description"> 
-                        <% allVisit.forEach(visit => {%>
-                            <% if(visit.visitDate.name == name) {%>
-                            
-                            <h2>Opis wizyty z dnia: <%- visit.visitTime %> </h2>
-                        <h4> <%- visit.visitSubsc %> <hr></h4>
-                        <% }%>
-                        <% })%>
-                    </div>
-                    </div>
-                   
-
+                </div>
             </section>
 
         </div>
@@ -93,4 +96,32 @@
     </div>
 
 
+
+    <script>
+        function setupTabs() {
+            document.querySelectorAll(".tabs_button").forEach(button => {
+                button.addEventListener('click', () =>{
+                    const sideBar = button.parentElement;
+                    const optionContainer = sideBar.parentElement;
+                    const tabNumber = button.dataset.forTab;
+                    const tabToActive = optionContainer.querySelector(`.tabs_content[data-tab="${tabNumber}"]`);
+                
+                    sideBar.querySelectorAll('.tabs_button').forEach(button =>{
+                        button.classList.remove('tabs_button--active');
+                    });
+
+                    optionContainer.querySelectorAll('.tabs_content').forEach(tab =>{
+                        tab.classList.remove('tabs_content--active');
+                    });
+                
+                    button.classList.add('tabs_button--active');
+                    tabToActive.classList.add('tabs_content--active');
+                })
+            })
+        }
+
+        document.addEventListener("DOMContentLoaded", () =>{
+            setupTabs();
+        })
+    </script>
 </body>
