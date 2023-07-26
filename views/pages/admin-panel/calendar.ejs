@@ -1,1 +1,71 @@
-<h1>kalendarz</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendarz</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="/css/style-statistic.css">
+    <link rel="stylesheet" href="/css/style-calendar.css">
+
+</head>
+<body>
+    <%- include('../../partials/sidebar'); -%>
+    
+    
+    <div class="main-content">
+      <form action="" method="POST" enctype="multipart/form-data">
+        <header>
+            <div class="header-title-wrapper"> 
+                <div class="top">
+
+                    <label for="menu-toggle">
+                        <span class="las la-calendar"></span>
+                    </label>
+                    <div class="header-title">
+                        <h1>Kalendarz</h1>
+                        <p>Zarządaj swoim czasem!</p>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="left">
+                        <div class="calendar">
+                            <div class="month">
+                                <i class="las la-angle-left prev"></i>
+                                <div class="date"> </div>
+                                <i class="las la-angle-right next"></i>
+                            </div>
+                            <div class="weekdays">
+                                <div>PON</div>
+                                <div>WT</div>
+                                <div>ŚR</div>
+                                <div>CZW</div>
+                                <div>PT</div>
+                                <div>SB</div>
+                                <div>ND</div>
+                            </div>
+                            <div class="days">
+                   
+                            </div>
+                            <div class="goto-today">
+                                <div class="goto">
+                                    <input type="text" placeholder="mm/yyyy" class="date-input">
+                                    <button class="goto-btn">Przejdz</button>
+                                </div>
+                                <button class="today-btn">Dzisiaj</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>    
+        </header>
+      </form>
+    </div>
+</body>
+<script src="/js/calendar.js"></script>
+</html>

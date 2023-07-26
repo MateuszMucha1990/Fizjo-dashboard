@@ -3,6 +3,9 @@ const router = new express.Router();
 const PageController = require('../controller/page-controller');
 const UserController = require('../controller/user-controller');
 const PatientController = require('../controller/patient-controller');
+const StatController = require('../controller/stat-controller');
+const CalendarController = require('../controller/calendar-controller');
+
 
 const authMiddleware = require('../db/middlewares/is-auth');
 const upload =require('../services/uploader')
@@ -32,6 +35,16 @@ router.get('/wyloguj', UserController.logout)
 router.get('/admin/edytujprofil', upload.single('image'), UserController.showEditUserProfile);
 router.post('/admin/edytujprofil', upload.single('image'), UserController.updateProfile);
 
+
+
+
+//statystyki
+router.get('/admin/statystyki', upload.single('image'), StatController.statistics);
+
+
+
+
+
 //Pacjenci-glowna
 router.get('/admin/pacjenci', PatientController.patientList)
 
@@ -53,7 +66,8 @@ router.post('/admin/pacjenci/:name/:_id/usun', PatientController.deleteVisit);
 
 
 //kalendarz
-router.get('/admin/kalendarz',authMiddleware, UserController.calendar)  //TODO-----
+router.get('/admin/kalendarz',authMiddleware, CalendarController.calendar)  //TODO-----
+router.post('/admin/kalendarz',authMiddleware, CalendarController.today)  //TODO-----
 
 
 module.exports = router;

@@ -101,7 +101,7 @@ hr{
     box-shadow: var(--shadow);
     padding: 2px 8px;
  }
-.add_new_history{
+.add_new_history, .button-34{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,7 +121,11 @@ hr{
     color: #fff;
     transform: translateY(-7px);
   }
-
+  .button-34{
+    background-color: rgba(255, 51, 0, 0.5);
+    margin-left: 10px;
+    border: none;
+  }
 
 .history-description{
     display: flex;

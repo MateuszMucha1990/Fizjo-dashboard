@@ -37,7 +37,7 @@ class UserController {
 
        //foto
         const image =  req.cookies.filename
-        res.render('pages/admin-panel/dashboard', {
+        res.render('pages/admin-panel/dashboard', {  //tu ma byc głowna 
             form:image,
             username:user.username
         });
