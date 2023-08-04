@@ -68,6 +68,7 @@ router.post('/admin/pacjenci/:name/:_id/usun', PatientController.deleteVisit);
 //kalendarz
 router.get('/admin/kalendarz',authMiddleware, CalendarController.calendar)  //TODO-----
 router.post('/admin/kalendarz',authMiddleware, CalendarController.today)  //TODO-----
+//router.post('/admin/kalendarz',authMiddleware, CalendarController.addAppointment)  //TODO-----
 
 
 module.exports = router;
