@@ -93,7 +93,7 @@ function initCalendar(){
         if(i === new Date().getDate() && year=== new Date().getFullYear() && month === new Date().getMonth()) {
            activeDay= i;
            getActiveDay(i);
-           updateEvents(i);
+           //updateEvents(i);
 
          
             //add active on today at startup
@@ -198,8 +198,8 @@ gotoBtn.addEventListener('click' ,(e) => {
 const addEventBtn = document.querySelector('.add-event');
 const addEventContainer = document.querySelector('.add-event-wrapper');
 const addEventCloseBtn = document.querySelector('.close');
-const addEventTitle = document.querySelector('.event-name');
-const addEventFrom = document.querySelector('.event-time-from');
+const addEventTitle = document.querySelector('.event_name');
+const addEventFrom = document.querySelector('.event_time_from');
 const addEventTo = document.querySelector('.event-time-to');
 
 addEventBtn.addEventListener('click',(e) => {
@@ -245,10 +245,29 @@ function addListener() {
         day.addEventListener("click", (e) => {
             //current day as active
             activeDay = Number(e.target.innerHTML);
+            const sendActiveDay = [activeDay]
+
+
+            const queryString = Object.keys(sendActiveDay)
+            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(sendActiveDay[key])}`)
+            .join('&');
+          
+            
+          fetch(`/admin/kalendarz?${queryString}`)
+            .then(response => response.json())
+            .then(data => {
+              // Handle the response from the Node.js endpoint
+              console.log(data); // You should see the appointment that matches the activeDay value
+            })
+            .catch(error => {
+              // Handle any errors that occur during the request
+            });
+
+            
             //call active day after click
             getActiveDay(e.target.innerHTML);
-            updateEvents(Number(e.target.innerHTML));
 
+           // updateEvents(Number(e.target.innerHTML));
             days.forEach((day) => {
                 day.classList.remove('active');
             });
@@ -299,34 +318,34 @@ function getActiveDay(date){
 
 
 //func to show events of that day
-function updateEvents(date){
-    let events = "";
-    eventsArr.forEach((event) => {
-        //get evennts of active day only
-        if(date== event.day && month +1 == event.month && year== event.year){
-            event.events.forEach((event) => {
-                events+= `
-                <div class="event">
-                <div class="title">
-                    <i class="las la-circle"></i>
-                    <h3 class="event-title">${event.title}</h3>
-                </div>
-                <div class="event-time">
-                    <span class="event-time">${event.time}</span>
-                </div>
-               </div> `
-        });
-    }});
+// function updateEvents(date){
+//     let events = "";
+//     eventsArr.forEach((event) => {
+//         //get evennts of active day only
+//         if(date== event.day && month +1 == event.month && year== event.year){
+//             event.events.forEach((event) => {
+//                 events+= `
+//                 <div class="event">
+//                 <div class="title">
+//                     <i class="las la-circle"></i>
+//                     <h3 class="event-title">${event.title}</h3>
+//                 </div>
+//                 <div class="event-time">
+//                     <span class="event-time">${event.time}</span>
+//                 </div>
+//                </div> `
+//         });
+//     }});
 
-    //no events
-    if(events =="") {
-        events = `<div class="no-event">
-             <h3>Brak wpisu</h3>
-            </div>`
-    };
+//     //no events
+//     if(events =="") {
+//         events = `<div class="no-event">
+//              <h3>Brak wpisu</h3>
+//             </div>`
+//     };
 
-    eventsContainer.innerHTML= events;
-};
+//     eventsContainer.innerHTML= events;
+// };
 
 //func to add events
 addEventSubmit.addEventListener('click', (e) =>{
@@ -381,6 +400,13 @@ addEventSubmit.addEventListener('click', (e) =>{
             events:[newEvent]
         });
     };
+    const dataToSend = {
+        day: activeDay,
+        month: month + 1, 
+        year: year,
+        events: [newEvent]
+      };
+
 
     //remvoe acrive from add event form
     addEventContainer.classList.remove('active');
@@ -389,7 +415,7 @@ addEventSubmit.addEventListener('click', (e) =>{
     addEventTo.value="";
 
     //show current added evemt
-    updateEvents(activeDay);
+   // updateEvents(activeDay);
 
     const activeDayElem = document.querySelector('.day.active');
     if(!activeDayElem.classList.contains('event')){
@@ -399,9 +425,11 @@ addEventSubmit.addEventListener('click', (e) =>{
     fetch('/admin/kalendarz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(eventsArr)
-      })
+        body: JSON.stringify(dataToSend)
+      });
 
+      
+  
 }); 
 
 
@@ -428,7 +456,7 @@ eventsContainer.addEventListener('click', (e) => {
         }
     });
     //after removing from arr update event
-    updateEvents(activeDay)
+    //updateEvents(activeDay)
 }
 });
 

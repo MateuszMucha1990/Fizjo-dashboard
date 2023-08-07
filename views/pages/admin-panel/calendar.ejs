@@ -65,7 +65,17 @@
                             <div class="event-date"></div>
                         </div>
                         <div class="events">
-                       
+                            <div class="event">
+                                <div class="title">
+                                    <i class="las la-circle"></i>
+                                    <% allAppointments.forEach(app => { %>
+                                                     <h3 class="event-title"><%- app.day %></h3>
+                                                     <% } )%>
+                                                 </div>
+                                                 <div class="event-time">
+                                                     <span class="event-time">jakasdata</span>
+                                                 </div>
+                                                </div> 
                         </div>
                         <div class="add-event-wrapper">
                             <div class="add-event-header">
@@ -76,10 +86,10 @@
                         <form method="POST">
                             <div class="add-event-body">
                                 <div class="add-event-input">
-                                    <input type="text" placeholder="Imię pacjenta" class="event-name">
+                                    <input type="text" placeholder="Imię pacjenta" class="event_name" name="event_name">
                                 </div>
                                 <div class="add-event-input">
-                                    <input type="text" placeholder="Wizyta od:" class="event-time-from">
+                                    <input type="text" placeholder="Wizyta od:" class="event_time_from" name="event_time_from">
                                 </div>
                                 <div class="add-event-input">
                                     <input type="text" placeholder="Wizyta do:" class="event-time-to">
